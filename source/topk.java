@@ -13,16 +13,16 @@ public class topk {
 		BTree.M = 60;
 		
 		ReadCSV readcsv = new ReadCSV();
-		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/test.csv");
+		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/NBA.csv");
 		
 		int[] v = new int[N];
 		for (int i=0; i<v.length; i++){
 			v[i]=1;
 		}
 		
-//		System.out.println("Naive method result: ");
-//		NaivePQ naive = new NaivePQ();
-//		naive.NaiveRun(table, v, K);
+		System.out.println("Naive method result: ");
+		NaivePQ naive = new NaivePQ();
+		naive.NaiveRun(table, v, K);
 
 		System.out.println("TopK method result: ");
 		ThresholdAlg ta = new ThresholdAlg();

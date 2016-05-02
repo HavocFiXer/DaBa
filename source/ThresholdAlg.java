@@ -9,8 +9,8 @@ public class ThresholdAlg {
 	public void ThresholdAlgRun(ArrayList<ArrayList<Float>> table, int[] v, int K){
 		int N = table.get(0).size()-1; //number of attributes
 		
-	/*build B-tree for id and each attributes, each B-tree array contains
-	 * #N <attribute, ID> trees or #N <ID, attribute> */
+	/*build B-tree for on each attributes, each B-tree array contains
+	 * #N <attribute, ID> trees with attributes is index*/
 		ArrayList<BTree<Float, Float>> btArrayAttrIsIndex = new ArrayList<BTree<Float, Float>>();		
 		for(int col=1; col < table.get(0).size(); ++col){
 			BTree<Float, Float> btree = new BTree<Float, Float>();
@@ -20,7 +20,7 @@ public class ThresholdAlg {
 			btree.toString();
 			btArrayAttrIsIndex.add(btree);
 		}	
-		
+	/*build B-tree on id as index, attributes array as value */	
 		BTree<Float, ArrayList<Float>> btIDIsIndex = new BTree<Float, ArrayList<Float>>();		
 		for(int row=0; row<table.size(); ++row){
 			ArrayList<Float> attrs = new ArrayList<Float>();
@@ -30,9 +30,7 @@ public class ThresholdAlg {
 			btIDIsIndex.put(table.get(row).get(0), attrs);
 		}
 		
-		
-		
-			
+	//perform threshold algorithm 	
 		FixSizedPriorityQueue<Float> pQueue = new FixSizedPriorityQueue<Float>(K);
 		ArrayList<Float> usedIDs = new ArrayList<Float>();
 		
@@ -73,7 +71,8 @@ public class ThresholdAlg {
 		System.out.println(pQueue.minheap.toString());
 
 		for(Map.Entry<Float, Float> entry : pQueue.idAndAttri.entrySet()){
-			System.out.println(entry.getKey() + ": " + entry.getValue());
+			//System.out.println(entry.getKey() + ": " + entry.getValue());
+			System.out.println(entry.getKey() + btIDIsIndex.getValue(entry.getKey()).toString() );
 		}
 		
 	}	

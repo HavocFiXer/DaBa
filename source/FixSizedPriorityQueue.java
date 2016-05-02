@@ -48,10 +48,4 @@ public class FixSizedPriorityQueue<E extends Comparable<E>> {
         }
     }
  
-    public List<E> sortedList() {
-        List<E> list = new ArrayList<E>(minheap);
-        Collections.sort(list); // PriorityQueue is not sorted
-        return list;
-    }
- 
 }

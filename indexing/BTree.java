@@ -112,7 +112,7 @@ public class BTree<Key extends Comparable<Key>, Value>  {
         // internal node
         else {
             for (int j = 0; j < x.m; j++) {
-                if (j+1 == x.m || !less(key, children[j+1].key))
+                if (j+1 == x.m || greater(key, children[j+1].key))
                     return search(children[j].next, key, ht-1);
             }
         }
@@ -150,14 +150,14 @@ public class BTree<Key extends Comparable<Key>, Value>  {
         // external node
         if (ht == 0) {
             for (j = 0; j < h.m; j++) {
-                if (!less(key, h.children[j].key)) break;
+                if (greater(key, h.children[j].key)) break;
             }
         }
 
         // internal node
         else {
             for (j = 0; j < h.m; j++) {
-                if ((j+1 == h.m) || !less(key, h.children[j+1].key)) {
+                if ((j+1 == h.m) || greater(key, h.children[j+1].key)) {
                     Node u = insert(h.children[j++].next, key, val, ht-1);
                     if (u == null) return null;
                     t.key = u.children[0].key;
@@ -217,8 +217,8 @@ public class BTree<Key extends Comparable<Key>, Value>  {
 
 
     // comparison functions - make Comparable instead of Key to avoid casts
-    private boolean less(Comparable k1, Comparable k2) {
-        return k1.compareTo(k2) < 0;
+    private boolean greater(Comparable k1, Comparable k2) {
+        return k1.compareTo(k2) > 0;
     }
 
     private boolean eq(Comparable k1, Comparable k2) {
