@@ -27,6 +27,18 @@ public class topk {
 		System.out.println("TopK method result: ");
 		ThresholdAlg ta = new ThresholdAlg();
 		ta.ThresholdAlgRun(table, v, K);
+
+
+		//for hashjoin
+		int[] hv = new int[N*2];
+		for (int i=0; i<hv.length; i++){
+			hv[i]=1;
+		}
+		System.out.println("Hash Join method result: ");
+		HashJoin hs = new HashJoin();
+		ArrayList<ArrayList<Float>> hashResult = hs.hashJoin(table,1,table,1);
+		System.out.println("Hash Join topk method result: ");
+		ta.ThresholdAlgRun(hashResult,hv,K);
 		
 	}	
 
