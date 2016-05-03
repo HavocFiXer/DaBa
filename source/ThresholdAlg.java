@@ -29,7 +29,7 @@ public class ThresholdAlg {
 			}
 			btIDIsIndex.put(table.get(row).get(0), attrs);
 		}
-		
+
 	//perform threshold algorithm 	
 		FixSizedPriorityQueue<Float> pQueue = new FixSizedPriorityQueue<Float>(K);
 		ArrayList<Float> usedIDs = new ArrayList<Float>();

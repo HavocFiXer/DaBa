@@ -13,7 +13,7 @@ public class NaivePQ {
 			ArrayList<Float> row = table.get(i);
 			Float score = 0.0f; //Float.valueOf(0);
 			for(int j=1; j<row.size(); j++){				
-				score +=  v[j]*row.get(j);
+				score +=  v[j-1]*row.get(j);
 			}			
 			pQueue.addRecord(score, Float.valueOf(i));
 		}

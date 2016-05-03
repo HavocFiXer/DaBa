@@ -9,7 +9,7 @@ import java.util.Map;
 public class topk {
 	public static void main(String[] args) {
 		int K=5;  //top k
-		int N=18; //number of attributes		
+		int N=17; //number of attributes		
 		BTree.M = 60;
 		
 		ReadCSV readcsv = new ReadCSV();
