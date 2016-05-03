@@ -13,7 +13,7 @@ public class topk {
 		BTree.M = 60;
 		
 		ReadCSV readcsv = new ReadCSV();
-		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/NBA.csv");
+		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/test.csv");
 		
 		int[] v = new int[N];
 		for (int i=0; i<v.length; i++){
@@ -28,17 +28,26 @@ public class topk {
 		ThresholdAlg ta = new ThresholdAlg();
 		ta.ThresholdAlgRun(table, v, K);
 
-
-		//for hashjoin
-		int[] hv = new int[N*2];
+		// hashJoin
+		int[] hv = new int[N*2]; 
 		for (int i=0; i<hv.length; i++){
 			hv[i]=1;
 		}
-		System.out.println("Hash Join method result: ");
+		System.out.println("Hash Join method: ");
 		HashJoin hs = new HashJoin();
-		ArrayList<ArrayList<Float>> hashResult = hs.hashJoin(table,1,table,1);
+		ArrayList<ArrayList<Float>> hashResult = hs.hashJoin(table,5,table,15);
+		System.out.println("Hash Join method finished" + " and the number of tuples get: " + 
+		hashResult.size()+ " table "+table.size());
+		//System.out.println(hs.leftId);
+		//System.out.println(hs.rightId);
 		System.out.println("Hash Join topk method result: ");
 		ta.ThresholdAlgRun(hashResult,hv,K);
+		
+		//add score 
+		System.out.println("Add score and ordering: ");
+		AddScore tableWithScore = new AddScore(table, v);
+		tableWithScore.ScoreAdd(table, v);
+		
 		
 	}	
 
