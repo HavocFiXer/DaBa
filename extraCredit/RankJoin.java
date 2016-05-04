@@ -58,61 +58,94 @@ public class RankJoin {
 		HRJNPriorityQueue<Float> pQueue = new HRJNPriorityQueue<Float>(K);
 		int leftChunkNumber = leftChunks.Chunks.size();
 		int rightChunkNumber = rightChunks.Chunks.size();
-		int i = 0;
-		int j = 0;
+//		int i = 0;
+//		int j = 0;
 		float threshold = 0.00f;
 
-		while(true){
-			HashJoin HJN = new HashJoin();
-			float T1 = F(pLeftMax,pRightMin[j]);
-			float T2 = F(pLeftMin[i],pRightMax);
-			threshold = Math.max(T1,T2 );
-			ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
-//			for (ArrayList<Float> r: HJNResult ){
+//		while(true){
+//			HashJoin HJN = new HashJoin();
+//			float T1 = F(pLeftMax,pRightMin[j]);
+//			float T2 = F(pLeftMin[i],pRightMax);
+//			threshold = Math.max(T1,T2 );
+//			ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
+////			for (ArrayList<Float> r: HJNResult ){
+////				ArrayList<Float> inter = new ArrayList<Float>();
+////				inter.addAll(r);
+////				inter.remove(inter.size()-1);
+////				pQueue.addRecord(r.get(r.size()-1), inter);
+////			}
+//			HJNResult.stream().forEach(r->{
 //				ArrayList<Float> inter = new ArrayList<Float>();
 //				inter.addAll(r);
 //				inter.remove(inter.size()-1);
+//
 //				pQueue.addRecord(r.get(r.size()-1), inter);
+//			} );
+//			if(pQueue.minheap.size() < K){
+//				continue;
 //			}
-			HJNResult.stream().forEach(r->{
-				ArrayList<Float> inter = new ArrayList<Float>();
-				inter.addAll(r);
-				inter.remove(inter.size()-1);
-
-				pQueue.addRecord(r.get(r.size()-1), inter);
-			} );
-			if(pQueue.minheap.size() < K){
-				continue;
-			}
-			
-			if(pQueue.minheap.peek() >= threshold){
-				break;
-			}
-			
-			
-			//Choose the input to retrive
-			else{
-				if(T1>=T2 ){
-					if(j<rightChunkNumber-1){
-						j++;
-					}
-					else{
-						i++;
-						j=0;
-					}
+//			
+//			if(pQueue.minheap.peek() >= threshold){
+//				break;
+//			}
+//			
+//			
+//			//Choose the input to retrive
+//			else{
+//				if(T1>=T2 ){
+//					if(j<rightChunkNumber-1){
+//						j++;
+//					}
+//					else{
+//						i++;
+//						j=0;
+//					}
+//				}
+//				else{
+//					if(i<leftChunkNumber-1){
+//						i++;
+//						j = 0;
+//					}
+//					else{
+//						j++;
+//						i = 0;
+//					}
+//				}
+//			}
+//
+//		}
+		
+		for(int i = 0; i< leftChunkNumber-1;i++){
+			for(int j = 0;j< rightChunkNumber-1;j++){
+				HashJoin HJN = new HashJoin();
+				float T1 = F(pLeftMax,pRightMin[j]);
+				float T2 = F(pLeftMin[i],pRightMax);
+				threshold = Math.max(T1,T2 );
+				ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
+//				for (ArrayList<Float> r: HJNResult ){
+//					ArrayList<Float> inter = new ArrayList<Float>();
+//					inter.addAll(r);
+//					inter.remove(inter.size()-1);
+//					pQueue.addRecord(r.get(r.size()-1), inter);
+//				}
+				HJNResult.stream().forEach(r->{
+					ArrayList<Float> inter = new ArrayList<Float>();
+					inter.addAll(r);
+					inter.remove(inter.size()-1);
+	
+					pQueue.addRecord(r.get(r.size()-1), inter);
+				} );
+				if(pQueue.minheap.size() < K){
+					continue;
 				}
-				else{
-					if(i<leftChunkNumber-1){
-						i++;
-						j = 0;
-					}
-					else{
-						j++;
-						i = 0;
-					}
+				
+				if(pQueue.minheap.peek() >= threshold){
+					break;
+				}
+				if(pQueue.minheap.peek() >= threshold){
+					break;
 				}
 			}
-
 		}
 		System.out.println(pQueue.minheap.toString());
 

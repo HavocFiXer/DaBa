@@ -141,7 +141,7 @@ public class HashJoin {
        }
        else
        {
-       	System.out.println("Hash Join has no results");
+       	//System.out.println("Hash Join has no results");
        }
        
        
