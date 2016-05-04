@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HRJNPriorityQueue<E extends Comparable<E>> {
 	public PriorityQueue<E> minheap;
-	public Map<E, ArrayList<Float>> scoreAndTuple;
+	public Map<ArrayList<Float>,E > tupleAndScore;
 	private int maxSize;
 	
 	public HRJNPriorityQueue(int maxSize){
@@ -18,12 +18,12 @@ public class HRJNPriorityQueue<E extends Comparable<E>> {
         	return (o1.compareTo(o2));    
             }
         });   
-        this.scoreAndTuple = new HashMap<E, ArrayList<Float>>();
+        this.tupleAndScore = new HashMap<ArrayList<Float>, E >();
 	}
     public void addRecord(E score, ArrayList<Float> tuple ) {
         if (minheap.size() < maxSize){ //less than maxSize, add directly
             minheap.add(score);
-            scoreAndTuple.put(score,  tuple);
+            tupleAndScore.put(tuple,score  );
         } else { // heap is full
             E min = minheap.peek();
             if (score.compareTo(min) > 0) { //compare new element with root, store larger
@@ -31,14 +31,16 @@ public class HRJNPriorityQueue<E extends Comparable<E>> {
                 minheap.add(score);
                 // remove <ID, min> from the queue
                 // there may be more than one entry with the value min in the queue, and pick whichever
-                for(Map.Entry<E, ArrayList<Float>> entry : scoreAndTuple.entrySet()){
+                for(Map.Entry<ArrayList<Float>, E > entry : tupleAndScore.entrySet()){
                 	if(entry.getValue().equals(min)){
-                		scoreAndTuple.remove(entry.getKey());
+                		tupleAndScore.remove(entry.getKey());
                 		break;
                 	}
                 }
-                scoreAndTuple.put(score, tuple);
+                tupleAndScore.put(tuple,score );
+
             }
         }
     }
 }
+

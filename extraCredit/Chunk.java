@@ -9,16 +9,17 @@ public class Chunk  {
 	public Chunk(ArrayList<ArrayList<Float>> table, int ChunkSize){
 		this.table = table;
 		this.ChunkSize = ChunkSize;
+		if(this.table.size()/(double)ChunkSize == Math.floor(table.size()/(double)ChunkSize) ){
+			ChunkMaxIndex = Math.floor(table.size()/(double)ChunkSize) -1;
+		}
+		else{
+			ChunkMaxIndex = Math.floor(table.size()/(double)ChunkSize);
+		}
 		this.Chunks = splitTable(table);
+//		System.out.println("ChunkNumber in constructor "+ Chunks.size());
 //		Chunks.stream().forEach(r->{
 //			System.out.println(r);
 //		});
-		if(this.table.size()/ChunkSize == Math.floor(table.size()/ChunkSize) ){
-			ChunkMaxIndex = Math.floor(table.size()/ChunkSize) -1;
-		}
-		else{
-			ChunkMaxIndex = Math.floor(table.size()/ChunkSize);
-		}
 		
 	}
 	public ArrayList<ArrayList<ArrayList<Float>>> splitTable(ArrayList<ArrayList<Float>> table){
@@ -27,22 +28,23 @@ public class Chunk  {
 			Chunks.add(table);
 		}
 		else{
+
 			for(int i = 0;i<= ChunkMaxIndex;i++ ){
 				ArrayList<ArrayList<Float>> interResult = new ArrayList<ArrayList<Float>>();
-				for(int j = 0; j<ChunkSize;j++){
+				for(int j = 0; j< ChunkSize;j++){
 					if(i*ChunkSize+j <table.size()-1)
 					{
 						interResult.add(table.get(i*ChunkSize+j));
+						
 					}
 					else{
 						break;
 					}
-					
 				}
 				Chunks.add(interResult);
 			}
 		}
-		
+
 		return Chunks;
 	}
 	public float getPmin(ArrayList<ArrayList<Float>> tableChunk){
@@ -58,6 +60,7 @@ public class Chunk  {
 		{
 			Pmin[i] = getPmin(CK.get(i));
 		}
+
 		return Pmin;
 	}
 }

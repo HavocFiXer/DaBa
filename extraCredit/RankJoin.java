@@ -64,11 +64,16 @@ public class RankJoin {
 
 		while(true){
 			HashJoin HJN = new HashJoin();
-//		System.out.println("i"+i + " j " + j);
 			float T1 = F(pLeftMax,pRightMin[j]);
 			float T2 = F(pLeftMin[i],pRightMax);
 			threshold = Math.max(T1,T2 );
 			ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
+//			for (ArrayList<Float> r: HJNResult ){
+//				ArrayList<Float> inter = new ArrayList<Float>();
+//				inter.addAll(r);
+//				inter.remove(inter.size()-1);
+//				pQueue.addRecord(r.get(r.size()-1), inter);
+//			}
 			HJNResult.stream().forEach(r->{
 				ArrayList<Float> inter = new ArrayList<Float>();
 				inter.addAll(r);
@@ -111,9 +116,9 @@ public class RankJoin {
 		}
 		System.out.println(pQueue.minheap.toString());
 
-		for(Map.Entry<Float, ArrayList<Float>> entry : pQueue.scoreAndTuple.entrySet()){
-			//System.out.println(entry.getKey() + ": " + entry.getValue());
-			System.out.println(entry.getKey() + entry.getValue().toString() );
+		for(Map.Entry<ArrayList<Float>, Float > entry : pQueue.tupleAndScore.entrySet()){
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+			System.out.println(entry.getValue().toString()+entry.getKey()   );
 		}
 		
 		
