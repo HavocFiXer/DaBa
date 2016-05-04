@@ -1,6 +1,7 @@
 package source;
 
 import indexing.BTree;
+import extraCredit.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +14,8 @@ public class topk {
 		BTree.M = 60;
 		
 		ReadCSV readcsv = new ReadCSV();
-		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/test.csv");
-		
+		ArrayList<ArrayList<Float>> table = readcsv.Readrun("src/data/NBA.csv");
+		N = table.get(0).size();
 		int[] v = new int[N];
 		for (int i=0; i<v.length; i++){
 			v[i]=1;
@@ -27,28 +28,30 @@ public class topk {
 		System.out.println("TopK method result: ");
 		ThresholdAlg ta = new ThresholdAlg();
 		ta.ThresholdAlgRun(table, v, K);
-
+		
+		
 		// hashJoin
 		int[] hv = new int[N*2]; 
 		for (int i=0; i<hv.length; i++){
 			hv[i]=1;
 		}
+		
 		System.out.println("Hash Join method: ");
 		HashJoin hs = new HashJoin();
-		ArrayList<ArrayList<Float>> hashResult = hs.hashJoin(table,5,table,15);
+		ArrayList<ArrayList<Float>> hashResult = hs.hashJoin(table,2,table,2);
 		System.out.println("Hash Join method finished" + " and the number of tuples get: " + 
 		hashResult.size()+ " table "+table.size());
-		//System.out.println(hs.leftId);
-		//System.out.println(hs.rightId);
-		System.out.println("Hash Join topk method result: ");
-		ta.ThresholdAlgRun(hashResult,hv,K);
-		
-		//add score 
+//		System.out.println("Hash Join topk method result: ");
+//		ta.ThresholdAlgRun(hashResult,hv,K);   //has out of memory problem when the hashResult is very large.
+//		
+/*  	//for score add part 
 		System.out.println("Add score and ordering: ");
-		AddScore tableWithScore = new AddScore(table, v);
-		tableWithScore.ScoreAdd(table, v);
-		
-		
+		AddScore tableAddScore = new AddScore(table, v);
+		ArrayList<ArrayList<Float>> tableWithScore = tableAddScore.tableWithScore;
+ */
+		System.out.println("Rank Join results: ");
+		RankJoin rankJoin = new RankJoin(table,table,hv,10);
+		rankJoin.RankJoinRun(5, 17);
 	}	
 
 }
