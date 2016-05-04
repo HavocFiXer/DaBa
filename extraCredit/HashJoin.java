@@ -54,7 +54,7 @@ public class HashJoin {
 //        }
         
         
-        // i = 0.00f;
+         i = 0.00f;
         
         for (ArrayList<Float>  tuple : relation2) {
             ArrayList< ArrayList<Float> >  lst = map.get(Math.round(tuple.get(idx2)%10));
@@ -70,10 +70,10 @@ public class HashJoin {
                         inter.addAll(r);
                         inter.addAll(tuple);
                         //delete the id
-//                        inter.set(0,i);
-//                        inter.remove(r.size());
+                        inter.set(0,i);
+                        inter.remove(r.size());
                     	result.add(inter);
-//                    	i = i+1.00f;
+                    	i = i+1.00f;
                     }
                 });
                 
@@ -123,7 +123,7 @@ public class HashJoin {
                        inter.add(score);
                        inter.remove(r.size()-1);
                        inter.remove(inter.size()-2);
-                       
+//                       System.out.println(score);
                    	result.add(inter);
                    	i = i+1.00f;
                    }
