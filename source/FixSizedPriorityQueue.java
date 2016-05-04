@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+/*Build a PriorityQueue with fixed size k, maintain min at root*/
 
-public class FixSizedPriorityQueue<E extends Comparable<E>> {
+public class FixSizedPriorityQueue<E extends Comparable<E>, I> {
     public PriorityQueue<E> minheap;
-    public Map<E, E> idAndAttri; 	// top k pairs of id and its score
+    public Map<I, E> idAndAttri; 	// top k pairs of id and its score
     private int maxSize; // max storage space
  
     public FixSizedPriorityQueue(int maxSize) {
@@ -24,20 +25,23 @@ public class FixSizedPriorityQueue<E extends Comparable<E>> {
         	return (o1.compareTo(o2));    
             }
         });   
-        this.idAndAttri = new HashMap<E, E>();
-	}          
-    public void addRecord(E e, E id) {
-        if (minheap.size() < maxSize){ //less than maxSize, add directly
+        this.idAndAttri = new HashMap<I, E>();
+	} 
+    
+    /*if heap size less than k, add records directly; 
+    after heap is full,compare new element with root, store larger */
+    public void addRecord(E e, I id) {
+        if (minheap.size() < maxSize){ 
             minheap.add(e);
             idAndAttri.put(id,  e);
-        } else { // heap is full
+        } else { 
             E min = minheap.peek();
-            if (e.compareTo(min) > 0) { //compare new element with root, store larger
+            if (e.compareTo(min) > 0) { 
                 minheap.poll();
                 minheap.add(e);
                 // remove <ID, min> from the queue
                 // there may be more than one entry with the value min in the queue, and pick whichever
-                for(Map.Entry<E, E> entry : idAndAttri.entrySet()){
+                for(Map.Entry<I, E> entry : idAndAttri.entrySet()){
                 	if(entry.getValue().equals(min)){
                 		idAndAttri.remove(entry.getKey());
                 		break;

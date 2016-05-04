@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.*;
 
 class ReadCSV{
-ArrayList<ArrayList<Float>> rsFloat = new ArrayList<ArrayList<Float> >();
+public ArrayList<ArrayList<Float>> attrFloat = new ArrayList<ArrayList<Float> >();
+public ArrayList<Integer> idInt = new ArrayList<Integer>();
 
-  public ArrayList<ArrayList<Float>> Readrun(String FileName) {
+  public void Readrun(String FileName) {
 	BufferedReader br = null;
 	String line = "";
 	String cvsSplitBy = ",";
@@ -23,10 +24,11 @@ ArrayList<ArrayList<Float>> rsFloat = new ArrayList<ArrayList<Float> >();
 			//Rs.add(onerow);
 			
 			ArrayList<Float> onerowFloat = new ArrayList<Float>();
-			for(String s: onerow){
-				onerowFloat.add(Float.parseFloat(s));
+			for(int i=1; i< onerow.length;i++){
+				onerowFloat.add(Float.parseFloat(onerow[i]));
 			}
-			rsFloat.add(onerowFloat);
+			attrFloat.add(onerowFloat);
+			idInt.add( Integer.parseInt(onerow[0]) );
 			//System.out.println(onerowFloat.toString());
 		}
 
@@ -44,8 +46,7 @@ ArrayList<ArrayList<Float>> rsFloat = new ArrayList<ArrayList<Float> >();
 			}
 		}
 	}
-		
-	return rsFloat;
+
   }
   
 }
