@@ -11,11 +11,11 @@ import source.Initiate.DataInit;
 public class topk {
 	public static void main(String[] args) {
 		int K=5;  //top k
-		int N=17; //number of attributes		
+		int N=5; //number of attributes		
 		BTree.M = 60;
 		
 		Initiate init = new Initiate();
-		Initiate.DataInit t = init.InitRun("src/data/NBA.csv");
+		Initiate.DataInit t = init.InitRun("src/data/test.csv");
 		
 		int[] v = new int[N];
 		for (int i=0; i<v.length; i++){
@@ -24,11 +24,11 @@ public class topk {
 		
 		System.out.println("Naive method result: ");
 		NaivePQ naive = new NaivePQ();
-		naive.NaiveRun(t, v, K);
+		naive.NaiveRun(t, v, K, N);
 
 		System.out.println("TopK method result: ");
 		ThresholdAlg ta = new ThresholdAlg();
-		ta.ThresholdAlgRun(t, v, K);
+		ta.ThresholdAlgRun(t, v, K, N);
 		
 	}	
 

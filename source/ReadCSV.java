@@ -7,29 +7,30 @@ import java.io.IOException;
 import java.util.*;
 
 class ReadCSV{
-public ArrayList<ArrayList<Float>> attrFloat = new ArrayList<ArrayList<Float> >();
-public ArrayList<Integer> idInt = new ArrayList<Integer>();
+public ArrayList<ArrayList<Integer>> table = new ArrayList<ArrayList<Integer> >();
+public ArrayList<String> title = new ArrayList<>();
 
   public void Readrun(String FileName) {
 	BufferedReader br = null;
 	String line = "";
-	String cvsSplitBy = ",";
-	//ArrayList<String[]> Rs = new ArrayList<>();
+	String csvSplitBy = ",";
 
 	try {
 		br = new BufferedReader(new FileReader(FileName));
-		br.readLine(); //do not read in row caption
+		//read in row caption
+		String[] namerow = br.readLine().split(csvSplitBy);
+		for(int i=0; i< namerow.length; i++){
+			title.add(namerow[i]);
+		}
+		//read in table, containing id and attributes
 		while ((line = br.readLine()) != null) {			
-			String[] onerow = line.split(cvsSplitBy);			
-			//Rs.add(onerow);
+			String[] onerow = line.split(csvSplitBy);			
 			
-			ArrayList<Float> onerowFloat = new ArrayList<Float>();
-			for(int i=1; i< onerow.length;i++){
-				onerowFloat.add(Float.parseFloat(onerow[i]));
+			ArrayList<Integer> onerowFloat = new ArrayList<Integer>();
+			for(int i=0; i< onerow.length;i++){
+				onerowFloat.add(Integer.parseInt(onerow[i]));
 			}
-			attrFloat.add(onerowFloat);
-			idInt.add( Integer.parseInt(onerow[0]) );
-			//System.out.println(onerowFloat.toString());
+			table.add(onerowFloat);
 		}
 
 	} catch (FileNotFoundException e) {

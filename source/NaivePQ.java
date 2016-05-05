@@ -1,31 +1,30 @@
 package source;
 
-import indexing.BTree;
-
 import java.util.ArrayList;
 import java.util.Map;
 
 public class NaivePQ {
-	public void NaiveRun(Initiate.DataInit t, int[] v, int K){
+	public void NaiveRun(Initiate.DataInit t, int[] v, int K, int N){
 		
-		FixSizedPriorityQueue<Float,Integer> pQueue = new FixSizedPriorityQueue<Float,Integer>(K);        
-		for(int i=0; i < t.attrTable.size(); i++){
-			ArrayList<Float> row = t.attrTable.get(i);
-			Float score = 0.0f; //Float.valueOf(0);
-			for(int j=0; j < row.size(); j++){				
-				score +=  v[j]*row.get(j);
+		FixSizedPriorityQueue<Integer,Integer> pQueue = new FixSizedPriorityQueue<Integer,Integer>(K);        
+		for(int i=0; i < t.table.size(); i++){
+			ArrayList<Integer> row = t.table.get(i);
+			Integer id = t.table.get(i).get(0);
+			
+			Integer score = 0; 
+			for(int j=1; j < N+1; j++){				
+				score +=  v[j-1]*row.get(j);
 			}			
-			pQueue.addRecord(score, i);
+			pQueue.addRecord(score, id);
 		}
 		
-		System.out.print("topk scores:");
+		System.out.println("topk scores:");
 		while (!pQueue.minheap.isEmpty()) {
 			System.out.print(pQueue.minheap.poll() + ", ");
 		}
 
-		System.out.println("\ntop k id and the attributes: ");
-		for(Map.Entry<Integer, Float> entry : pQueue.idAndAttri.entrySet()){	
-			
+		System.out.println(t.title);	 
+		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){			
  			System.out.println(entry.getKey() + 
  				t.btIDIsIndex.getValue(entry.getKey()).toString().replace(",","").replace("[", " ").replace("]"," ") 
  				+ entry.getValue() );
