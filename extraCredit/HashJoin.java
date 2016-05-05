@@ -1,8 +1,8 @@
 package extraCredit;
 
 import java.util.*;
+import source.*;
 
- 
 public class HashJoin {
  
 	private float i;
@@ -23,7 +23,6 @@ public class HashJoin {
             v.add(tuple);
             map.put(Math.round(tuple.get(idx1)%10), v);
         }
-        
 //        for (ArrayList<Float> tuple : relation2) {
 //            ArrayList< ArrayList<Float> >  v2 = map2.getOrDefault(Math.round(tuple.get(idx2)%10), new ArrayList<>());
 //            v2.add(tuple);
@@ -53,17 +52,12 @@ public class HashJoin {
 //        }
 //        }
         
-        
          i = 0.00f;
-        
         for (ArrayList<Float>  tuple : relation2) {
             ArrayList< ArrayList<Float> >  lst = map.get(Math.round(tuple.get(idx2)%10));
             if (lst != null) {
-            	
                 lst.stream().forEach(r ->{
-
-                    if(tuple.get(idx2).equals(r.get(idx1)))
-                    {
+                    if(tuple.get(idx2).equals(r.get(idx1))){
                         ArrayList<Float> inter = new ArrayList<Float>();
 //                      leftId.add(r.get(0));
 //                		rightId.add(tuple.get(0));
@@ -76,23 +70,16 @@ public class HashJoin {
                     	i = i+1.00f;
                     }
                 });
-                
-                
             }
         }
-        if(result.size() !=0)
-
-        {
+        if(result.size() !=0){
 //        	for(ArrayList<Float> r : result){
 //            	System.out.println(r);
 //            }
         }
-        else
-        {
+        else{
         	System.out.println("Hash Join has no results");
         }
-        
-        
         return result;
     }
    
@@ -108,14 +95,11 @@ public class HashJoin {
            map.put(Math.round(tuple.get(idx1)%10), v);
        }
        
-
-       
        for (ArrayList<Float>  tuple : relation2) {
            ArrayList< ArrayList<Float> >  lst = map.get(Math.round(tuple.get(idx2)%10));
            if (lst != null) {
                lst.stream().forEach(r ->{
-            	   if(tuple.get(idx2).equals(r.get(idx1)))
-                   {
+            	   if(tuple.get(idx2).equals(r.get(idx1))){
                        ArrayList<Float> inter = new ArrayList<Float>();
                		   float score = r.get(r.size()-1)+ tuple.get(tuple.size()-1);
                        inter.addAll(r);
@@ -128,24 +112,51 @@ public class HashJoin {
                    	i = i+1.00f;
                    }
                });
-               
-               
            }
        }
-       if(result.size() !=0)
-
-       {
+       if(result.size() !=0){
 //       	for(ArrayList<Float> r : result){
 //           	System.out.println(r);
 //           }
        }
-       else
-       {
+       else{
        	//System.out.println("Hash Join has no results");
        }
-       
-       
        return result;
+   }
+   
+   public  ArrayList< ArrayList<Float> > multiFileHashRankJoin( ArrayList<ArrayList< ArrayList<Float> >> multiFiles, 
+		   ArrayList<ArrayList<Integer>> AttrToJoin ){
+		/*
+	   attriToJoin is like [[1,3,2,3],[1,4,3,2]] which means: file1 join file2 with condition file1.att3 = file2.att3; 
+	   and then join file3 with condition file1.attr4 = file3.attr2 
+	   */
+	   // read files 
+//	   	   ArrayList<ArrayList< ArrayList<Float> >> multiFiles = new ArrayList<ArrayList< ArrayList<Float> >>();
+//	   for(String str : fileName){
+//			Initiate init = new Initiate();
+//			Initiate.DataInit t = init.InitRun(str);
+//		   multiFiles.add(t.attrTable); //need to recheck!!!!!!
+//	   }
+	   ArrayList< ArrayList<Float> > result = new ArrayList< ArrayList<Float> >();
+	   result.addAll(multiFiles.get(0));
+	   for(int i = 1; i < multiFiles.size();i++){
+//		   System.out.println("i "+i);
+//		   System.out.println("multiFiles.size() "+multiFiles.size());
+
+		   
+		   int idxRight = AttrToJoin.get(i-1).get(3);
+		   int idxLeft = 0;
+		   for (int j = 0; j< i-1;j++){
+			   idxLeft = idxLeft + multiFiles.get(i-1).get(0).size();
+		   }
+		   idxLeft = idxLeft + AttrToJoin.get(i-1).get(1);
+//		   System.out.println(" idxLeft " + idxLeft+ " idxRight "+ idxRight);
+		   result = hashRankJoin(result, idxLeft, multiFiles.get(i), idxRight);
+//		   System.out.println(" idxLeft " + idxLeft+ " idxRight "+ idxRight);
+	   }
+	   return result;
+
    }
 //    public static void main(String[] args) {
 //    	
