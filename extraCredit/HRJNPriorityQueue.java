@@ -4,7 +4,7 @@ import java.util.*;
 
 public class HRJNPriorityQueue<E extends Comparable<E>> {
 	public PriorityQueue<E> minheap;
-	public Map<ArrayList<Float>,E > tupleAndScore;
+	public Map<ArrayList<Integer>,E > tupleAndScore;
 	private int maxSize;
 	
 	public HRJNPriorityQueue(int maxSize){
@@ -18,9 +18,9 @@ public class HRJNPriorityQueue<E extends Comparable<E>> {
         	return (o1.compareTo(o2));    
             }
         });   
-        this.tupleAndScore = new HashMap<ArrayList<Float>, E >();
+        this.tupleAndScore = new HashMap<ArrayList<Integer>, E >();
 	}
-    public void addRecord(E score, ArrayList<Float> tuple ) {
+    public void addRecord(E score, ArrayList<Integer> tuple ) {
         if (minheap.size() < maxSize){ //less than maxSize, add directly
             minheap.add(score);
             tupleAndScore.put(tuple,score  );
@@ -31,7 +31,7 @@ public class HRJNPriorityQueue<E extends Comparable<E>> {
                 minheap.add(score);
                 // remove <ID, min> from the queue
                 // there may be more than one entry with the value min in the queue, and pick whichever
-                for(Map.Entry<ArrayList<Float>, E > entry : tupleAndScore.entrySet()){
+                for(Map.Entry<ArrayList<Integer>, E > entry : tupleAndScore.entrySet()){
                 	if(entry.getValue().equals(min)){
                 		tupleAndScore.remove(entry.getKey());
                 		break;

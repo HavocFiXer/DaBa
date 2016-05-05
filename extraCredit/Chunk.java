@@ -2,11 +2,11 @@ package extraCredit;
 import java.util.*;
 
 public class Chunk  {
-	private ArrayList<ArrayList<Float>> table;
+	private ArrayList<ArrayList<Integer>> table;
 	int ChunkSize;
-	public ArrayList<ArrayList<ArrayList<Float>>> Chunks;
+	public ArrayList<ArrayList<ArrayList<Integer>>> Chunks;
 	double ChunkMaxIndex;
-	public Chunk(ArrayList<ArrayList<Float>> table, int ChunkSize){
+	public Chunk(ArrayList<ArrayList<Integer>> table, int ChunkSize){
 		this.table = table;
 		this.ChunkSize = ChunkSize;
 		if(this.table.size()/(double)ChunkSize == Math.floor(table.size()/(double)ChunkSize) ){
@@ -22,8 +22,8 @@ public class Chunk  {
 //		});
 //		System.out.println("Constructor ChunkNumber"+ ChunkMaxIndex +"sijfids"+this.table.size()/(double)ChunkSize);
 	}
-	public ArrayList<ArrayList<ArrayList<Float>>> splitTable(ArrayList<ArrayList<Float>> table){
-		ArrayList<ArrayList<ArrayList<Float>>> Chunks = new ArrayList<ArrayList<ArrayList<Float>>>();
+	public ArrayList<ArrayList<ArrayList<Integer>>> splitTable(ArrayList<ArrayList<Integer>> table){
+		ArrayList<ArrayList<ArrayList<Integer>>> Chunks = new ArrayList<ArrayList<ArrayList<Integer>>>();
 		if(ChunkSize >= table.size()){
 			Chunks.add(table);
 		}
@@ -31,7 +31,7 @@ public class Chunk  {
 //			System.out.println("MaxIndex"+ChunkMaxIndex);
 
 			for(int i = 0;i<= ChunkMaxIndex;i++ ){
-				ArrayList<ArrayList<Float>> interResult = new ArrayList<ArrayList<Float>>();
+				ArrayList<ArrayList<Integer>> interResult = new ArrayList<ArrayList<Integer>>();
 				for(int j = 0; j< ChunkSize;j++){
 					if(i*ChunkSize+j <table.size())
 					{
@@ -55,18 +55,18 @@ public class Chunk  {
 
 		return Chunks;
 	}
-	public float getPmin(ArrayList<ArrayList<Float>> tableChunk){
+	public Integer getPmin(ArrayList<ArrayList<Integer>> tableChunk){
 		int tupleLength = tableChunk.get(0).size();
-		float p = tableChunk.get(tableChunk.size()-1).get(tupleLength-1);
+		Integer p = tableChunk.get(tableChunk.size()-1).get(tupleLength-1);
 //		System.out.println(p);
 		return p;
 	}
-	public float[] getChunksPmin(Chunk CKS){
-		ArrayList<ArrayList<ArrayList<Float>>> CK = CKS.Chunks;
+	public Integer[] getChunksPmin(Chunk CKS){
+		ArrayList<ArrayList<ArrayList<Integer>>> CK = CKS.Chunks;
 //		System.out.println("CK.size "+CK.size() );
 //		System.out.println("CK.last "+CK.get(CK.size()-1) );
 
-		float[] Pmin = new float[CK.size()];
+		Integer[] Pmin = new Integer[CK.size()];
 		for(int i = 0;i< CK.size();i++)
 		{
 			Pmin[i] = getPmin(CK.get(i));

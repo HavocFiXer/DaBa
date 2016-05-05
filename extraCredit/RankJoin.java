@@ -4,9 +4,9 @@ import java.util.*;
 import source.*;
 
 public class RankJoin {
-	private ArrayList<ArrayList<Float>> leftTable;
-	private ArrayList<ArrayList<Float>> rightTable;
-	public ArrayList<ArrayList< ArrayList<Float> >> multiFiles;
+	private ArrayList<ArrayList<Integer>> leftTable;
+	private ArrayList<ArrayList<Integer>> rightTable;
+	public ArrayList<ArrayList< ArrayList<Integer> >> multiFiles;
 	int[] v;
 	ArrayList<int[]> multiV;
 	int filesAmount;
@@ -18,13 +18,13 @@ public class RankJoin {
 	int rightTableSize;
 	ArrayList<Integer> eachFileSize;
 	ArrayList<ArrayList<Integer>> AttrToJoin;
-//	private float pLeftMax;
-//	private float pLeftMin;
-//	private float pRightMax;
-//	private float pRightMin;
+//	private Integer pLeftMax;
+//	private Integer pLeftMin;
+//	private Integer pRightMax;
+//	private Integer pRightMin;
 
 	/*Constructor*/
-	public RankJoin(ArrayList<ArrayList<Float>> table1,ArrayList<ArrayList<Float>> table2, int [] v, int K){
+	public RankJoin(ArrayList<ArrayList<Integer>> table1,ArrayList<ArrayList<Integer>> table2, int [] v, int K){
 		//score and ordering 
 		this.v = v;
 		this.K = K;
@@ -45,18 +45,20 @@ public class RankJoin {
 		}
 		this.leftTable =  new AddScore(table1, vLeft).ScoreAdd();
 		this.rightTable = new AddScore(table2,vRight).ScoreAdd();
+//		System.out.println("join table size" + leftTable.size() + " and " + rightTable.size());
 		
 	}
 	
+	
 	public RankJoin(ArrayList<String> fileNames, int[] v, int K,ArrayList<ArrayList<Integer>> AttrToJoin){
-	   	   multiFiles = new ArrayList<ArrayList< ArrayList<Float> >>();
+	   	   multiFiles = new ArrayList<ArrayList< ArrayList<Integer> >>();
 	   	   this.v = v;
 		   this.K = K;
 		   this.AttrToJoin = AttrToJoin;
 		   filesAmount = fileNames.size();
 //			System.out.println("fileNames.size() "+ fileNames.size());
 
-		   chunkSize = K*2;
+		   chunkSize = K*100;
 		   int accumulatIndex = 0;
 		   eachFileSize = new ArrayList<Integer> ();
 			multiV = new ArrayList<int[]>();
@@ -67,7 +69,7 @@ public class RankJoin {
 	   		Initiate init = new Initiate();
 			Initiate.DataInit t = init.InitRun(fileNames.get(i));
 //			System.out.println("i "+i +" RankJoin t.attrTable.size() "+ t.attrTable.size());
-			eachFileSize.add(t.attrTable.get(0).size());
+			eachFileSize.add(t.table.get(0).size());
 			int[] interV = new int[eachFileSize.get(i)];
 			
 			
@@ -82,7 +84,7 @@ public class RankJoin {
 //			System.out.println("accumulatIndex "+accumulatIndex);
 
 			multiV.add(interV);
-			multiFiles.add(new AddScore(t.attrTable, multiV.get(i)).ScoreAdd());
+			multiFiles.add(new AddScore(t.table, multiV.get(i)).ScoreAdd());
 	   	   }
 
 		   
@@ -90,41 +92,43 @@ public class RankJoin {
 	   
 	   
 	
-	
+/*for compute F socre*/	
 
-	public float F(float left, float right)
+	public int F(int left, int right)
 	{
 		return left+right;
 	}
 	
+	/* two table Rank join method*/
 	public void RankJoinRun(int idx1,int idx2){
-		float pLeftMax = leftTable.get(0).get(leftAttrSize);
-		float pRightMax = rightTable.get(0).get(rightAttrSize);
+		int pLeftMax = leftTable.get(0).get(leftAttrSize);
+		int pRightMax = rightTable.get(0).get(rightAttrSize);
 		Chunk leftChunks = new Chunk(leftTable,chunkSize);
 		Chunk rightChunks = new Chunk(rightTable,chunkSize);
-		float[] pLeftMin = leftChunks.getChunksPmin(leftChunks);
-		float[] pRightMin = rightChunks.getChunksPmin(rightChunks);
-		HRJNPriorityQueue<Float> pQueue = new HRJNPriorityQueue<Float>(K);
+		Integer[] pLeftMin = leftChunks.getChunksPmin(leftChunks);
+		Integer[] pRightMin = rightChunks.getChunksPmin(rightChunks);
+		HRJNPriorityQueue<Integer> pQueue = new HRJNPriorityQueue<Integer>(K);
 		int leftChunkNumber = leftChunks.Chunks.size();
 		int rightChunkNumber = rightChunks.Chunks.size();
 //		int i = 0;
 //		int j = 0;
-		float threshold = 0.00f;
+		int threshold = 0;
+//		System.out.println("leftChunkNumber" + leftChunkNumber+ " and " + rightTable.size());
 
 //		while(true){
 //			HashJoin HJN = new HashJoin();
-//			float T1 = F(pLeftMax,pRightMin[j]);
-//			float T2 = F(pLeftMin[i],pRightMax);
+//			Integer T1 = F(pLeftMax,pRightMin[j]);
+//			Integer T2 = F(pLeftMin[i],pRightMax);
 //			threshold = Math.max(T1,T2 );
-//			ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
-////			for (ArrayList<Float> r: HJNResult ){
-////				ArrayList<Float> inter = new ArrayList<Float>();
+//			ArrayList<ArrayList<Integer>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
+////			for (ArrayList<Integer> r: HJNResult ){
+////				ArrayList<Integer> inter = new ArrayList<Integer>();
 ////				inter.addAll(r);
 ////				inter.remove(inter.size()-1);
 ////				pQueue.addRecord(r.get(r.size()-1), inter);
 ////			}
 //			HJNResult.stream().forEach(r->{
-//				ArrayList<Float> inter = new ArrayList<Float>();
+//				ArrayList<Integer> inter = new ArrayList<Integer>();
 //				inter.addAll(r);
 //				inter.remove(inter.size()-1);
 //
@@ -164,16 +168,18 @@ public class RankJoin {
 //
 //		}
 		
-		for(int i = 0; i< leftChunkNumber-1;i++){
-			for(int j = 0;j< rightChunkNumber-1;j++){
+		for(int i = 0; i< leftChunkNumber;i++){
+			for(int j = 0;j< rightChunkNumber;j++){
+//				System.out.println("i" + i +" j " +j );
 				HashJoin HJN = new HashJoin();
-				float T1 = F(pLeftMax,pRightMin[j]);
-				float T2 = F(pLeftMin[i],pRightMax);
+				Integer T1 = F(pLeftMax,pRightMin[j]);
+				Integer T2 = F(pLeftMin[i],pRightMax);
 				threshold = Math.max(T1,T2 );
-				ArrayList<ArrayList<Float>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
+				System.out.println("threshold" + threshold);
+				ArrayList<ArrayList<Integer>> HJNResult = HJN.hashRankJoin(leftChunks.Chunks.get(i), idx1, rightChunks.Chunks.get(j), idx2);
 
 				HJNResult.stream().forEach(r->{
-					ArrayList<Float> inter = new ArrayList<Float>();
+					ArrayList<Integer> inter = new ArrayList<Integer>();
 					inter.addAll(r);
 					inter.remove(inter.size()-1);
 	
@@ -186,14 +192,12 @@ public class RankJoin {
 				if(pQueue.minheap.peek() >= threshold){
 					break;
 				}
-				if(pQueue.minheap.peek() >= threshold){
-					break;
-				}
+
 			}
 		}
 		System.out.println(pQueue.minheap.toString());
 
-		for(Map.Entry<ArrayList<Float>, Float > entry : pQueue.tupleAndScore.entrySet()){
+		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
 //			System.out.println(entry.getKey() + ": " + entry.getValue());
 			System.out.println(entry.getValue().toString()+entry.getKey()   );
 		}
@@ -201,17 +205,17 @@ public class RankJoin {
 		
 	}
 	
-	public float getSum(float[] a,int  n){	
+	public int getSum(int[] a,int  n){	
 		 return n > 0 ? a[n-1] + getSum(a, n - 1) : 0;
 		 }
 	
-	public float getThreshold(float[] pMax, float[] pMin)
+	public int getThreshold(int[] pMax, int[] pMin)
 	{
-		float threshold = 0;
-		float sumPMax = getSum(pMax,pMax.length);
+		int threshold = 0;
+		int sumPMax = getSum(pMax,pMax.length);
 		threshold = sumPMax-pMax[0]+pMin[0];
-		for (int i = 0;i<pMin.length;i++){
-			float value = sumPMax-pMax[i]+pMin[i];
+		for (int i = 0;i< pMin.length;i++){
+			int value = sumPMax-pMax[i]+pMin[i];
 			if(value > threshold){
 				threshold = value;
 			}
@@ -226,12 +230,12 @@ public class RankJoin {
 
 
 		//Begins!!!!!
-		float threshold = 0.00f;
-		HRJNPriorityQueue<Float> pQueue = new HRJNPriorityQueue<Float>(K);
+		int threshold = 0;
+		HRJNPriorityQueue<Integer> pQueue = new HRJNPriorityQueue<Integer>(K);
 		ArrayList<Integer> eachFileChunkAmount = new ArrayList<Integer>();
-		float[] pMax = new float[filesAmount];
-		ArrayList<float[]> pMin = new ArrayList<float[]> ();
-		ArrayList<ArrayList<ArrayList< ArrayList<Float> >>> multiFilesSplited = new ArrayList<ArrayList<ArrayList< ArrayList<Float> >>>();
+		int[] pMax = new int[filesAmount];
+		ArrayList<Integer[]> pMin = new ArrayList<Integer[]> ();
+		ArrayList<ArrayList<ArrayList< ArrayList<Integer> >>> multiFilesSplited = new ArrayList<ArrayList<ArrayList< ArrayList<Integer> >>>();
 		for(int i = 0;i < filesAmount;i++){
 			Chunk eachTableSplit = new Chunk(multiFiles.get(i),chunkSize);
 			eachFileChunkAmount.add((int)eachTableSplit.ChunkMaxIndex+1);
@@ -245,19 +249,19 @@ public class RankJoin {
 		
 		for(int i = 0; i < order.BruteForthOrder.size(); i++){
 			//put the chunks to join in one List
-			ArrayList<ArrayList< ArrayList<Float> >> ChunksToJoin = new ArrayList<ArrayList< ArrayList<Float> >>();
+			ArrayList<ArrayList< ArrayList<Integer> >> ChunksToJoin = new ArrayList<ArrayList< ArrayList<Integer> >>();
 			ArrayList<Integer> orderOfChunk = order.BruteForthOrder.get(i);
-			float[] pMinChunksToJoin = new float[filesAmount];
+			int[] pMinChunksToJoin = new int[filesAmount];
 			orderOfChunk.stream().forEach(r->{
 				int indexOfR = orderOfChunk.indexOf(r);
 				ChunksToJoin.add(multiFilesSplited.get(indexOfR).get(r));
 				pMinChunksToJoin[indexOfR] = pMin.get(indexOfR)[r];
 			});
 			HashJoin HJN = new HashJoin();
-			ArrayList<ArrayList<Float>> HJNResult = HJN.multiFileHashRankJoin(ChunksToJoin, AttrToJoin);
+			ArrayList<ArrayList<Integer>> HJNResult = HJN.multiFileHashRankJoin(ChunksToJoin, AttrToJoin);
 			threshold = getThreshold(pMax, pMinChunksToJoin);
 			HJNResult.stream().forEach(r->{
-				ArrayList<Float> inter = new ArrayList<Float>();
+				ArrayList<Integer> inter = new ArrayList<Integer>();
 				inter.addAll(r);
 				inter.remove(inter.size()-1);
 
@@ -275,7 +279,7 @@ public class RankJoin {
 
 		System.out.println(pQueue.minheap.toString());
 
-		for(Map.Entry<ArrayList<Float>, Float > entry : pQueue.tupleAndScore.entrySet()){
+		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
 //			System.out.println(entry.getKey() + ": " + entry.getValue());
 			System.out.println(entry.getValue().toString()+entry.getKey()   );
 		}
