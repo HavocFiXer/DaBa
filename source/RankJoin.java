@@ -244,7 +244,11 @@ public class RankJoin {
             } 
             printScore = pQueue.tupleAndScore.get(printTuple);
             System.out.format("%8d\t",printScore);
-    		System.out.format("%8d\t", printTuple);
+            for (int i=0; i<printTuple.size(); i++){
+          		System.out.format("%8d\t", printTuple.get(i));	
+            }
+
+  
     		
 //    		for (int i=0; i< t.title.size()-1; i++){
 //    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printTuple).get(i) );		
