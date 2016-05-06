@@ -15,14 +15,14 @@ public class ThresholdAlg {
 			for(int col=0; col<N; ++col){
 				// find the id of row row in attribute attr, and if the id has been used, then skip
 				Integer score = 0;
-				Integer id = t.btArrayAttrIsIndex.get(col).getValueList().get(row).get(0);
+				Integer id = t.btArrayAttrIsIndex.get(col).valueList.get(row);
 				if(usedIDs.contains(id)){
 					continue;
 				}
 				
 				for(int j=0; j<N; ++j){
 					if(j == col){
-						score += v[j]*t.btArrayAttrIsIndex.get(col).getKeyList().get(row);
+						score += v[j]*t.btArrayAttrIsIndex.get(col).keyList.get(row);
 						continue;
 					}
 					score += v[j]*t.btIDIsIndex.getValue(id).get(j);
@@ -37,7 +37,7 @@ public class ThresholdAlg {
 			//threshold is the score for each row
 			Integer threshold = 0;
 			for(int col=0; col<N; col++){
-				threshold += v[col]*t.btArrayAttrIsIndex.get(col).getKeyList().get(row);
+				threshold += v[col]*t.btArrayAttrIsIndex.get(col).keyList.get(row);
 			}
 			if(pQueue.minheap.peek() >= threshold){
 				break;

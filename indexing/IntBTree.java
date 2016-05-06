@@ -1,4 +1,4 @@
-package indexing;
+package IntBTree;
 
 import java.util.ArrayList;
 
