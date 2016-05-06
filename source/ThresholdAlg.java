@@ -55,7 +55,7 @@ public class ThresholdAlg {
 			int printID=0;
 			int printScore=0;
 			int min =pQueue.minheap.poll();
-            for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet() ){
+            for(Map.Entry<Integer, Integer> entry : pQueue.idAndScore.entrySet() ){
             	if(entry.getValue().equals(min)){
             		printID=entry.getKey();
             		printScore=entry.getValue();

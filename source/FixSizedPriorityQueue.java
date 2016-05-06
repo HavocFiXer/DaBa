@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 
 public class FixSizedPriorityQueue<E extends Comparable<E>, I> {
     public PriorityQueue<E> minheap;
-    public Map<I, E> idAndAttri; 	// top k pairs of id and its score
+    public Map<I, E> idAndScore; 	// top k pairs of id and its score
     private int maxSize; // max storage space
  
     public FixSizedPriorityQueue(int maxSize) {
@@ -25,7 +25,7 @@ public class FixSizedPriorityQueue<E extends Comparable<E>, I> {
         	return (o1.compareTo(o2));    
             }
         });   
-        this.idAndAttri = new HashMap<I, E>();
+        this.idAndScore = new HashMap<I, E>();
 	} 
     
     /*if heap size less than k, add records directly; 
@@ -33,7 +33,7 @@ public class FixSizedPriorityQueue<E extends Comparable<E>, I> {
     public void addRecord(E e, I id) {
         if (minheap.size() < maxSize){ 
             minheap.add(e);
-            idAndAttri.put(id,  e);
+            idAndScore.put(id,  e);
         } else { 
             E min = minheap.peek();
             if (e.compareTo(min) > 0) { 
@@ -41,13 +41,13 @@ public class FixSizedPriorityQueue<E extends Comparable<E>, I> {
                 minheap.add(e);
                 // remove <ID, min> from the queue
                 // there may be more than one entry with the value min in the queue, and pick whichever
-                for(Map.Entry<I, E> entry : idAndAttri.entrySet()){
+                for(Map.Entry<I, E> entry : idAndScore.entrySet()){
                 	if(entry.getValue().equals(min)){
-                		idAndAttri.remove(entry.getKey());
+                		idAndScore.remove(entry.getKey());
                 		break;
                 	}
                 }
-                idAndAttri.put(id, e);
+                idAndScore.put(id, e);
             }
         }
     }
