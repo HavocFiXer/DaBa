@@ -1,4 +1,4 @@
-package extraCredit;
+package source;
 
 import java.util.*;
 import java.util.Comparator;
@@ -37,7 +37,9 @@ public class AddScore{
 		        return b.get(v.length).compareTo(a.get(v.length));
 		    }
 		});
-
+//		for(int i = 0; i <tableWithScore.size();i++){
+//		System.out.println(tableWithScore.get(i));
+//	}
 		return tableWithScore;
 	}
 

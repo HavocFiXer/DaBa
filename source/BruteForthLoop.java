@@ -1,4 +1,4 @@
-package extraCredit;
+package source;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,8 @@ public class BruteForthLoop {
 		for(int i = 0;i < FilesCount; i++ ){
 			ArrayList<Integer> interresult = new ArrayList<Integer>();
 			for (int j = 0; j < eachFileChunkAmount.get(i); j++){
-				interresult.add(j);	
+				interresult.add(j);
+				
 			}
 			A.add(interresult);
 		}
@@ -23,7 +24,10 @@ public class BruteForthLoop {
 			ArrayList<Integer> sub = new ArrayList<Integer>();
 			sub.add(A.get(0).get(i));
 			Loop(1,i, sub);
-		}		
+
+		}
+		
+		
 	}
 	
 	public void Loop( int array, int element, ArrayList<Integer> sublist){
@@ -32,8 +36,10 @@ public class BruteForthLoop {
 				ArrayList<Integer> subresult = new ArrayList<Integer>();
 				subresult.addAll(sublist);
 				subresult.add(A.get(array).get(lst));
+
+
 				BruteForthOrder.add(subresult);
-			}			
+			}
 		}
 		else{
 			for(int i= 0;i< eachFileChunkAmount.get(array);i++){
@@ -44,4 +50,5 @@ public class BruteForthLoop {
 			}
 		}
 	}
+
 }

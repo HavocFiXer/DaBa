@@ -1,4 +1,4 @@
-package extraCredit;
+package source;
 import java.util.*;
 
 public class Chunk  {
@@ -23,7 +23,6 @@ public class Chunk  {
 			Chunks.add(table);
 		}
 		else{
-
 			for(int i = 0;i<= ChunkMaxIndex;i++ ){
 				ArrayList<ArrayList<Integer>> interResult = new ArrayList<ArrayList<Integer>>();
 				for(int j = 0; j< ChunkSize;j++){
@@ -38,6 +37,7 @@ public class Chunk  {
 				Chunks.add(interResult);
 			}
 		}
+
 		return Chunks;
 	}
 	public Integer getPmin(ArrayList<ArrayList<Integer>> tableChunk){
