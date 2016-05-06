@@ -1,94 +1,98 @@
 package source;
 
-import indexing.BTree;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-
+//import indexing.BTree;
+import indexing.IntBTree;
 import source.Initiate.DataInit;
 import extraCredit.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
 public class topk {
 	public static void main(String[] args) {
-		int K=5;  //top k
-		int N=5; //number of attributes		
-		BTree.M = 60;
-		
-		Initiate init = new Initiate();
-		Initiate.DataInit t = init.InitRun("src/data/test.csv");
-		
-		int[] v = new int[N];
-		for (int i=0; i<v.length; i++){
-			v[i]=1;
-		}
-		
-		System.out.println("Naive method result: ");
-		NaivePQ naive = new NaivePQ();
-		naive.NaiveRun(t, v, K, N);
+		int K=Integer.parseInt(args[0]);  //top k
+		int N=Integer.parseInt(args[1]); //number of attributes		
+//		BTree.M = 60;
+		Initiate.DataInit t= new Initiate.DataInit();
+				
+		while(true){
+			Scanner scanner = new Scanner(System.in);
+			String[] input = scanner.nextLine().split(" ");
+			ArrayList<String> filepath = new ArrayList<String>();
+			ArrayList<ArrayList<Integer>> conditionToJoin = new ArrayList<ArrayList<Integer>>();
 
-		System.out.println("TopK method result: ");
-		ThresholdAlg ta = new ThresholdAlg();
-		ta.ThresholdAlgRun(t, v, K, N);
-		
-		// hashJoin
-		int[] hv = new int[t.table.get(0).size()*2]; 
-		for (int i=0; i<hv.length; i++){
-			hv[i]=1;
-		}
-		
-//		System.out.println("Hash Join method: ");
-		HashJoin hs = new HashJoin();
-////		ReadCSV read = new ReadCSV();
-////		read.Readrun("src/data/test.csv");
-		ArrayList<ArrayList<Integer>> hashResult = hs.hashJoin(t.table,6,t.table,6);
-		System.out.println("Hash Join method finished" + " and the number of tuples get: " + 
-		hashResult.size()+ " table "+t.table.size());
-//		System.out.println("Hash Join topk method result: ");
-////		ta.ThresholdAlgRun(hashResult,hv,K);   //has out of memory problem when the hashResult is very large.
+			if (input[0].equals("init")){
+				Initiate init = new Initiate();
+			//	Initiate.DataInit t = init.InitRun("src/data/test.csv");
+				String[] path = input[1].split(",");
+				Collections.addAll(filepath, path);
+				
+				if (filepath.size()==1){
+					t = init.InitRun(input[1]);
+				}else{
+					ArrayList<ArrayList<ArrayList<Integer>>> tableList = new ArrayList<ArrayList<ArrayList<Integer>>>();
+					ArrayList<ArrayList<String>> titleList = new ArrayList<ArrayList<String>>();
+					
+					for (int nf=0; nf<filepath.size(); nf++){
+						ReadCSV readcsv = new ReadCSV();
+						readcsv.Readrun( filepath.get(nf).toString() );
+						tableList.add( readcsv.table );	
+						titleList.add( readcsv.title );
+					}
+
+					String[] condition= input[3].split(",");
+					for (int i=0; i<condition.length; i++){
+						String[] f = condition[i].split("\\.|=");
+						ArrayList<Integer> eachCondition = new ArrayList<Integer>();
+						Integer file1 = filepath.indexOf(f[0]);
+						eachCondition.add(file1);
+						Integer index1= titleList.get(file1).indexOf(f[1]);
+						eachCondition.add(index1);
+						Integer file2 = filepath.indexOf(f[2]);
+						eachCondition.add(file2);
+						Integer index2= titleList.get(file2).indexOf(f[3]);
+						eachCondition.add(index2);
+						conditionToJoin.add(eachCondition);
+							}
+					}
 	
-/*  	//for score add part 
-		System.out.println("Add score and ordering: ");
-		AddScore tableAddScore = new AddScore(table, v);
-		ArrayList<ArrayList<Float>> tableWithScore = tableAddScore.tableWithScore;
-*/
-		System.out.println("Rank Join results: ");
-		RankJoin rankJoin = new RankJoin(t.table,t.table,hv,K);
-		rankJoin.RankJoinRun(7, 5);
-		
-		//multiFiles RankJoin
-//		public RankJoin(ArrayList<String> fileNames, int[] v, int K,ArrayList<ArrayList<Integer>> AttrToJoin)
-		ArrayList<String> fileNames = new ArrayList<String> ();
-		fileNames.add("src/data/test.csv");
-		fileNames.add("src/data/test.csv");
-//		fileNames.add("src/data/test.csv");
+				continue;
+				}
+			
+			
+			int[] v = new int[N];
+			for (int i=0; i<v.length; i++){
+				v[i]=Integer.parseInt(input[i+1]);
+			}			
 
-		System.out.println(fileNames.toString());
-		int[] mhv = new int[t.table.get(0).size()*3]; 
-		for (int i=0; i<mhv.length; i++){
-			mhv[i]=1;
+			int[] hv = new int[2*N+2]; //initialize 0 array
+			for (int i=1; i<N+1; i++){
+				hv[i]=Integer.parseInt(input[i]);
+			}				
+			
+			if (input[0].equals("run1")){
+			//	System.out.println("Naive method result: ");
+				NaivePQ naive = new NaivePQ();
+				naive.NaiveRun(t, v, K, N);
+				}
+
+			if (input[0].equals("run2")){
+			//	System.out.println("TopK method result: ");
+				ThresholdAlg ta = new ThresholdAlg();
+				ta.ThresholdAlgRun(t, v, K, N);
+				}
+			
+			if (input[0].equals("run3")){
+			//	System.out.println("Rank join result: ");
+				RankJoin multiRankJoin = new RankJoin(filepath,hv,K,conditionToJoin);
+				multiRankJoin.MultiFilesRankJoinRun();
+				
+				}
+					
 		}
-		ArrayList<ArrayList<Integer>> AttrToJoin = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> condition = new ArrayList<Integer>();
-		condition.add(1);
-		condition.add(7);
-		condition.add(2);
-		condition.add(5);
-		AttrToJoin.add(condition);
-//		ArrayList<Integer> condition2 = new ArrayList<Integer>();
-//
-//		condition2.add(0, 2);
-//		condition2.add(1, 8);
-//		condition2.add(2, 3);
-//		condition2.add(3, 4);
-//		AttrToJoin.add(condition2);
-	System.out.println("AttrToJoin"+AttrToJoin);
-
 
 		
-		RankJoin multiRankJoin = new RankJoin(fileNames,mhv,K,AttrToJoin);
-		multiRankJoin.MultiFilesRankJoinRun();
-		
-
 	}	
 
 }
