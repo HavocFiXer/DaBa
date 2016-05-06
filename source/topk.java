@@ -1,6 +1,5 @@
 package source;
 
-import extraCredit.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -56,7 +55,7 @@ public class topk {
 						Integer index2= titleList.get(file2).indexOf(f[3]);
 						eachCondition.add(index2);
 						conditionToJoin.add(eachCondition);
-						}
+					}
 				
 				}	
 				continue;
@@ -67,20 +66,20 @@ public class topk {
 				for (int i=0; i<v.length; i++){
 					v[i]=Integer.parseInt(input[i+1]);
 				}
-			//	System.out.println("Naive method result: ");
+				System.out.println("Naive method result: ");
 				NaivePQ naive = new NaivePQ();
 				naive.NaiveRun(t, v, K, N);
-				}
+			}
 
 			if (input[0].equals("run2")){
 			//scan in weights for topk
 				for (int i=0; i<v.length; i++){
 					v[i]=Integer.parseInt(input[i+1]);
 				}
-			//	System.out.println("TopK method result: ");
+				System.out.println("threshold algorithm result: ");
 				ThresholdAlg ta = new ThresholdAlg();
 				ta.ThresholdAlgRun(t, v, K, N);
-				}
+			}
 			
 			if (input[0].equals("run3")){
 				//scan in weights for rank join			
@@ -96,10 +95,10 @@ public class topk {
 					count++;
 					}
 				}
-			//	System.out.println("Rank join result: ");
+				System.out.println("Rank join result: ");
 				RankJoin multiRankJoin = new RankJoin(filepath,hv,K,conditionToJoin);
 				multiRankJoin.MultiFilesRankJoinRun();				
-				}
+			}
 					
 		}
 

@@ -1,4 +1,4 @@
-package iPair;
+package indexing;
 
 public class iPair<Key extends Comparable<Key>, Value>{
 	private Key key;

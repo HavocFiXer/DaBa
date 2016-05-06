@@ -14,8 +14,8 @@ A1, A2, . . . , AN.
 public class Initiate{
 	
 	public static class DataInit{
-		ArrayList<ArrayList<Integer>> table;
-		ArrayList<String> title = new ArrayList<>();
+		public ArrayList<ArrayList<Integer>> table;
+		public ArrayList<String> title;
 		//ArrayList<BTree<Integer, Integer>> btArrayAttrIsIndex;
 		ArrayList<IntBTree> btArrayAttrIsIndex;
 		//BTree<Integer, ArrayList<Integer>> btIDIsIndex;	

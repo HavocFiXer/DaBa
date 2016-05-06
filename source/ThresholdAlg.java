@@ -19,7 +19,7 @@ public class ThresholdAlg {
 				if(usedIDs.contains(id)){
 					continue;
 				}
-				
+				//calculate score of records for each id
 				for(int j=0; j<N; ++j){
 					if(j == col){
 						score += v[j]*t.btArrayAttrIsIndex.get(col).getKeyList().get(row);
@@ -43,28 +43,31 @@ public class ThresholdAlg {
 				break;
 			}
 		}
-
-		//System.out.println("topk scores:");
-		//System.out.println(pQueue.minheap.toString());
-//		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){
-// 			System.out.println(entry.getKey() + 
-// 	 		t.btIDIsIndex.getValue(entry.getKey()).toString().replace(",","").replace("[", " ").replace("]"," ") 
-// 	 		+ entry.getValue() );
-//		}
-		
+	
+		/*print out the results, as a ascending order of score */
 		for (int i=0; i<t.title.size(); i++){
-			System.out.format("%5s\t", t.title.get(i));		
+			System.out.format("%8s\t", t.title.get(i));		
 		}	
-		System.out.format("score");
+		System.out.format("%8s\t","score");
 		System.out.format("\n");
-		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){			
-			System.out.format("%9d\t", entry.getKey());
-			for (int i=0; i<t.title.size()-1; i++){
-				System.out.format("%9d\t", t.btIDIsIndex.getValue(entry.getKey()).get(i) );		
-			}	
-			System.out.format("%9d",entry.getValue());
-			System.out.format("\n");
-		}		
+		//print out each record with(id, attris, score)
+		while (!pQueue.minheap.isEmpty()){
+			int printID=0;
+			int printScore=0;
+			int min =pQueue.minheap.poll();
+            for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet() ){
+            	if(entry.getValue().equals(min)){
+            		printID=entry.getKey();
+            		printScore=entry.getValue();
+            	}
+            }
+    		System.out.format("%8d\t", printID);
+    		for (int i=0; i<t.title.size()-1; i++){
+    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printID).get(i) );		
+    		}	            	
+			System.out.format("%8d",printScore);
+			System.out.format("\n");			
+		}	
 		
 		
 	}	
