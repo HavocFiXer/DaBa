@@ -254,14 +254,14 @@ public class RankJoin {
 		}
 		
 
-		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
-//			System.out.println(entry.getKey() + ": " + entry.getValue());
-			System.out.format("%9s\t",entry.getValue().toString() );
-			for(int i = 0;i<entry.getKey().size();i++)
-			System.out.format("%9s\t",entry.getKey().get(i)   );
-			System.out.format("\n");
-			
-		}
+//		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
+////			System.out.println(entry.getKey() + ": " + entry.getValue());
+//			System.out.format("%9s\t",entry.getValue().toString() );
+//			for(int i = 0;i<entry.getKey().size();i++)
+//			System.out.format("%9s\t",entry.getKey().get(i)   );
+//			System.out.format("\n");
+//			
+//		}
 		
 
 	}
