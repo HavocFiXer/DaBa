@@ -1,6 +1,7 @@
 package source;
 
-import indexing.BTree;
+//import indexing.BTree;
+import indexing.IntBTree;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,10 @@ public class Initiate{
 	static class DataInit{
 		ArrayList<ArrayList<Integer>> table;
 		ArrayList<String> title = new ArrayList<>();
-		ArrayList<BTree<Integer, Integer>> btArrayAttrIsIndex;
-		BTree<Integer, ArrayList<Integer>> btIDIsIndex;	
+		//ArrayList<BTree<Integer, Integer>> btArrayAttrIsIndex;
+		ArrayList<IntBTree> btArrayAttrIsIndex;
+		//BTree<Integer, ArrayList<Integer>> btIDIsIndex;	
+		IntBTree btIDIsIndex;	
 	}
 	
 	public DataInit InitRun(String FileName){		
@@ -29,23 +32,29 @@ public class Initiate{
 		
 	/*build B-tree for on each attributes, each B-tree array contains
 	 * #N <attribute, ID> trees with attributes is index*/
-		t.btArrayAttrIsIndex = new ArrayList<BTree<Integer, Integer>>();		
+		//t.btArrayAttrIsIndex = new ArrayList<BTree<Integer, Integer>>();
+		t.btArrayAttrIsIndex = new ArrayList<IntBTree>();
 		for(int col=1; col < t.table.get(0).size(); ++col){
-			BTree<Integer, Integer> btree = new BTree<Integer, Integer>();
+			//BTree<Integer, Integer> btree = new BTree<Integer, Integer>();
+			IntBTree btree = new IntBTree();
 			for(int row=0; row < t.table.size(); ++row){
-				btree.put(t.table.get(row).get(col), t.table.get(row).get(0));
+				ArrayList<Integer> tmp=new ArrayList<Integer>();
+				tmp.add(t.table.get(row).get(0));
+				btree.insert(t.table.get(row).get(col), tmp);
 			}
-			btree.toString();
+			btree.setKeyValueLists();
+			//t.btArrayAttrIsIndex.add(btree);
 			t.btArrayAttrIsIndex.add(btree);
 		}	
 	/*build B-tree on id as index, attributes array as value */	
-		t.btIDIsIndex = new BTree<Integer, ArrayList<Integer>>();		
+		//t.btIDIsIndex = new BTree();		
+		t.btIDIsIndex = new IntBTree();		
 		for(int row=0; row<t.table.size(); ++row){
 			ArrayList<Integer> attrs = new ArrayList<Integer>();
 			for(int col=1; col < t.table.get(0).size(); ++col){
 				attrs.add(t.table.get(row).get(col));
 			}
-			t.btIDIsIndex.put(t.table.get(row).get(0), attrs);
+			t.btIDIsIndex.insert(t.table.get(row).get(0), attrs);
 		}
 		return t;
 	}	
