@@ -7,4 +7,7 @@ public class iPair<Key extends Comparable<Key>, Value>{
 		this.key=key;
 		this.value=value;
 	}
+	public int valueCompare(iPair ipair){
+		return ((Comparable)key).compareTo((Comparable)ipair.key);
+	}
 }
