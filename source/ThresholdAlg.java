@@ -46,14 +46,28 @@ public class ThresholdAlg {
 			}
 		}
 
-		System.out.println("topk scores:");
-		System.out.println(pQueue.minheap.toString());
-
-		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){
- 			System.out.println(entry.getKey() + 
- 	 		t.btIDIsIndex.getValue(entry.getKey()).toString().replace(",","").replace("[", " ").replace("]"," ") 
- 	 		+ entry.getValue() );
-		}
+		//System.out.println("topk scores:");
+		//System.out.println(pQueue.minheap.toString());
+//		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){
+// 			System.out.println(entry.getKey() + 
+// 	 		t.btIDIsIndex.getValue(entry.getKey()).toString().replace(",","").replace("[", " ").replace("]"," ") 
+// 	 		+ entry.getValue() );
+//		}
+		
+		for (int i=0; i<t.title.size(); i++){
+			System.out.format("%5s\t", t.title.get(i));		
+		}	
+		System.out.format("score");
+		System.out.format("\n");
+		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){			
+			System.out.format("%5d\t", entry.getKey());
+			for (int i=0; i<t.title.size()-1; i++){
+				System.out.format("%5d\t", t.btIDIsIndex.getValue(entry.getKey()).get(i) );		
+			}	
+			System.out.format("%5d",entry.getValue());
+			System.out.format("\n");
+		}		
+		
 		
 	}	
 }
