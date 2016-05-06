@@ -1,7 +1,7 @@
 package source;
 
 import java.util.*;
-import source.*;
+
 
 public class RankJoin {
 	private ArrayList<ArrayList<Integer>> leftTable;
@@ -232,6 +232,27 @@ public class RankJoin {
 		}
 		
 		System.out.format("\n");
+		while (!pQueue.minheap.isEmpty()){
+			ArrayList<Integer> printTuple = new ArrayList<Integer>();
+			int printScore = 0;
+			int min =pQueue.minheap.poll();
+            for(Map.Entry<ArrayList<Integer>, Integer >  entry : pQueue.tupleAndScore.entrySet() ){
+            	if(entry.getValue().equals(min)){
+            		printTuple = entry.getKey();
+            		printScore=entry.getValue();
+            	}
+            } 
+            printScore = pQueue.tupleAndScore.get(printTuple);
+            System.out.format("%8d\t",printScore);
+    		System.out.format("%8d\t", printTuple);
+    		
+//    		for (int i=0; i< t.title.size()-1; i++){
+//    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printTuple).get(i) );		
+//    		}	            	
+//			System.out.format("%8d",printScore);
+			System.out.format("\n");			
+		}
+		
 
 		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
 //			System.out.println(entry.getKey() + ": " + entry.getValue());
