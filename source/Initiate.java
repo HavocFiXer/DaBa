@@ -12,7 +12,7 @@ A1, A2, . . . , AN.
  */
 public class Initiate{
 	
-	static class DataInit{
+	public static class DataInit{
 		ArrayList<ArrayList<Integer>> table;
 		ArrayList<String> title = new ArrayList<>();
 		ArrayList<BTree<Integer, Integer>> btArrayAttrIsIndex;

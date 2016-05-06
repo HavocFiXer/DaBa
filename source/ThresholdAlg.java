@@ -1,7 +1,5 @@
 package source;
 
-import indexing.BTree;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -60,11 +58,11 @@ public class ThresholdAlg {
 		System.out.format("score");
 		System.out.format("\n");
 		for(Map.Entry<Integer, Integer> entry : pQueue.idAndAttri.entrySet()){			
-			System.out.format("%5d\t", entry.getKey());
+			System.out.format("%9d\t", entry.getKey());
 			for (int i=0; i<t.title.size()-1; i++){
-				System.out.format("%5d\t", t.btIDIsIndex.getValue(entry.getKey()).get(i) );		
+				System.out.format("%9d\t", t.btIDIsIndex.getValue(entry.getKey()).get(i) );		
 			}	
-			System.out.format("%5d",entry.getValue());
+			System.out.format("%9d",entry.getValue());
 			System.out.format("\n");
 		}		
 		
