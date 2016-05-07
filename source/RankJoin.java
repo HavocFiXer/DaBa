@@ -188,7 +188,8 @@ public class RankJoin {
 		}
 		//get bruteForth scan order
 		BruteForthLoop order = new BruteForthLoop(eachFileChunkAmount);
-//		System.out.println("BruteForthLoop" +order.BruteForthOrder);
+		
+		//System.out.println("BruteForthLoopSize:" +order.BruteForthOrder.size());
 
 		for(int i = 0; i < order.BruteForthOrder.size(); i++){
 
@@ -205,6 +206,7 @@ public class RankJoin {
 			
 			/* Hash join retrived chunks and add the result into priority queue*/
 			HashJoin HJN = new HashJoin();
+			//System.out.println(">>>>" +ChunksToJoin.size());
 			ArrayList<ArrayList<Integer>> HJNResult = HJN.multiFileHashRankJoin(ChunksToJoin, AttrToJoin);
 			threshold = getThreshold(pMax, pMinChunksToJoin);
 			HJNResult.stream().forEach(r->{
@@ -223,8 +225,6 @@ public class RankJoin {
 			}
 		}
 
-		System.out.println(pQueue.minheap.toString()); 
-		
 		ArrayList<String> AR = new ArrayList<String>();
 		AR = AttrResult;
 		for (int count = 0;  count < AR.size();  count ++){
@@ -248,26 +248,9 @@ public class RankJoin {
           		System.out.format("%8d\t", printTuple.get(i));	
             }
 
-  
-    		
-//    		for (int i=0; i< t.title.size()-1; i++){
-//    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printTuple).get(i) );		
-//    		}	            	
-//			System.out.format("%8d",printScore);
 			System.out.format("\n");			
 		}
 		
-
-//		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
-////			System.out.println(entry.getKey() + ": " + entry.getValue());
-//			System.out.format("%9s\t",entry.getValue().toString() );
-//			for(int i = 0;i<entry.getKey().size();i++)
-//			System.out.format("%9s\t",entry.getKey().get(i)   );
-//			System.out.format("\n");
-//			
-//		}
-		
-
 	}
 	
 	

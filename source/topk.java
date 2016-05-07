@@ -47,11 +47,11 @@ public class topk {
 						String[] f = condition[i].split("\\.|=");
 						ArrayList<Integer> eachCondition = new ArrayList<Integer>();
 						Integer file1 = filename.indexOf(f[0]);
-						eachCondition.add(file1);
+						eachCondition.add(file1+1);
 						Integer index1= titleList.get(file1).indexOf(f[1]);
 						eachCondition.add(index1);
 						Integer file2 = filename.indexOf(f[2]);
-						eachCondition.add(file2);
+						eachCondition.add(file2+1);
 						Integer index2= titleList.get(file2).indexOf(f[3]);
 						eachCondition.add(index2);
 						conditionToJoin.add(eachCondition);
@@ -60,6 +60,7 @@ public class topk {
 				}	
 				continue;
 			}
+			
 			
 			if (input[0].equals("run1")){
 			//scan in weights for topk

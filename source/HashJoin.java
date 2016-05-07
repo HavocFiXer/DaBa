@@ -101,6 +101,7 @@ public class HashJoin {
 
 	   ArrayList< ArrayList<Integer> > result = new ArrayList< ArrayList<Integer> >();
 	   result.addAll(multiFiles.get(0));
+
 	   for(int i =1; i < multiFiles.size();i++){
 		   int idxRight = AttrToJoin.get(i-1).get(3);
 		   int idxLeft = AttrToJoin.get(i-1).get(1);
