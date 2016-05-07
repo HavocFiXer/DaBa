@@ -3,30 +3,34 @@ package indexing;
 import java.util.ArrayList;
 
 public class IntBTree{
-	private static int M=4;
-	private Node root;
-	private int height;
-	private int N;
 
+	private Node root;
+	private static int Limit=60;
+	private int height;
 	private ArrayList<Integer> keyList=new ArrayList<Integer>();
 	private ArrayList<ArrayList<Integer>> valueList=new ArrayList<ArrayList<Integer>>();
 
-	private static class Node{
-		private int m;
-		private Element[] children=new Element[M];
-		private Node(int k){
-			m=k;
+	private class Node{
+		private int cnumber;//children number
+		private Element[] children=new Element[Limit];
+		public Node(int number){
+			cnumber=number;
 		}
 	}
 
-	private static class Element{
+	private class Element{
 		private int key;
 		private ArrayList<Integer> value;
 		private Node next;
-		public Element(int key, ArrayList<Integer> value, Node next){
-			this.key=key;
-			this.value=value;
-			this.next=next;
+		public Element(int inputKey, ArrayList<Integer> inputValue, Node inputNext){
+			key=inputKey;
+			value=inputValue;
+			next=inputNext;
+		}
+		public Element(int inputKey, ArrayList<Integer> inputValue){
+			key=inputKey;
+			value=inputValue;
+			next=null;
 		}
 	}
 
@@ -34,20 +38,8 @@ public class IntBTree{
 		root=new Node(0);
 	}
 
-	public boolean isEmpty(){
-		return size()==0;
-	}
-
-	public int size(){
-		return N;
-	}
-
-	public int height(){
-		return height;
-	}
-
-	public void setLimit(int k){
-		M=k;
+	public void setLimit(int limit){
+		Limit=limit;
 	}
 
 	public ArrayList<Integer> getValue(int key){
@@ -62,82 +54,89 @@ public class IntBTree{
 		return valueList;
 	}
 
-	private ArrayList<Integer> search(Node x, int key, int ht){
+	public void setKeyValueLists(){
+		Traverse(root,height);
+	}
+
+	private void Traverse(Node node, int ht){
 		if(ht==0){
-			for(int i=0;i<x.m;++i){
-				if(key==x.children[i].key) return x.children[i].value;
+			for(int i=0;i<node.cnumber;++i){
+				this.keyList.add(node.children[i].key);
+				this.valueList.add(node.children[i].value);
 			}
 		}
 		else{
-			for(int i=0;i<x.m;++i){
-				if(i+1==x.m||key>x.children[i+1].key) return search(x.children[i].next,key,ht-1);
+			for(int i=0;i<node.cnumber;++i){
+				Traverse(node.children[i].next,ht-1);
+			}
+		}
+	}
+
+	private ArrayList<Integer> search(Node node, int key, int ht){
+		if(ht==0){
+			for(int i=0;i<node.cnumber;++i){
+				if(key==node.children[i].key) return node.children[i].value;
+			}
+		}
+		else{
+			for(int i=0;i<node.cnumber;++i){
+				if(i+1==node.cnumber||key>node.children[i+1].key) return search(node.children[i].next,key,ht-1);
 			}
 		}
 		return null;
 	}
 
 	public void insert(int key, ArrayList<Integer> value){
-		Node u=ins(root,key,value,height);
-		++N;
-		if(u==null) return;
+		Node node=ins(root,key,value,height);
+		if(null==node) return;
 
-		Node t = new Node(2);
-		t.children[0]=new Element(root.children[0].key,null,root);
-		t.children[1]=new Element(u.children[0].key,null,u);
-		root=t;
+		Element rootleft=new Element(root.children[0].key,null,root); 
+		Element rootright=new Element(node.children[0].key,null,node);
+
+		Node newroot=new Node(2);
+		newroot.children[1]=rootright;
+		newroot.children[0]=rootleft;
+		root=newroot;
 		++height;
 	}
 
-	private Node ins(Node h, int key, ArrayList<Integer> value, int ht){
+	private Node ins(Node node, int key, ArrayList<Integer> value, int ht){
 		int po;
-		Element t=new Element(key,value,null);
+		Element element=new Element(key,value);
 		if(ht==0){
-			for(po=0;po<h.m;++po){
-				if(key>h.children[po].key) break;
+			for(po=0;po<node.cnumber;++po){
+				if(key>node.children[po].key) break;
 			}
 		}
 		else{
-			for(po=0;po<h.m;++po){
-				if(po+1==h.m||key>h.children[po+1].key){
-					Node u=ins(h.children[po++].next,key,value,ht-1);
-					if(u==null) return null;
-					t.key=u.children[0].key;
-					t.next=u;
+			for(po=0;po<node.cnumber;++po){
+				if(po+1==node.cnumber||key>node.children[po+1].key){
+					Node tmpnode=ins(node.children[po++].next,key,value,ht-1);
+					if(tmpnode==null){
+						return null;
+					}
+					element.key=tmpnode.children[0].key;
+					element.value=null;
+					element.next=tmpnode;
 					break;
 				}
 			}
 		}
-		for(int i=h.m;i>po;--i){
-			h.children[i]=h.children[i-1];
+		for(int i=node.cnumber;i>po;--i){
+			node.children[i]=node.children[i-1];
 		}
-		h.children[po]=t;
-		++h.m;
-		if(h.m<M) return null;
+		node.children[po]=element;
+		++node.cnumber;
+		if(node.cnumber<Limit) return null;
 		else{
-			Node sec=new Node(M/2);
-			h.m=M/2;
-			for(int i=0;i<M/2;++i){
-				sec.children[i]=h.children[M/2+i];
+			int half=Limit/2;
+			Node sec=new Node(half);
+			node.cnumber=half;
+			for(int i=0;i<half;++i){
+				sec.children[i]=node.children[half+i];
 			}
 			return sec;
 		}
 	}
 
-	public void setKeyValueLists(){
-		Traverse(root,height);
-	}
-
-	private void Traverse(Node h, int ht){
-		if(ht==0){
-			for(int i=0;i<h.m;++i){
-				this.keyList.add(h.children[i].key);
-				this.valueList.add(h.children[i].value);
-			}
-		}
-		else{
-			for(int i=0;i<h.m;++i){
-				Traverse(h.children[i].next,ht-1);
-			}
-		}
-	}
 }
