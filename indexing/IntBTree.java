@@ -110,7 +110,7 @@ public class IntBTree{
 		}
 		else{
 			for(po=0;po<node.cnumber;++po){
-				if(node.children[po+1].key<key||node.cnumber-1==po){
+				if(node.cnumber-1==po||node.children[po+1].key<key){
 					Node tmpnode=ins(node.children[po++].next,key,value,ht-1);
 					if(null==tmpnode) return tmpnode;
 					element.key=tmpnode.children[0].key;

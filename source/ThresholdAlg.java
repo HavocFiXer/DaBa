@@ -46,9 +46,9 @@ public class ThresholdAlg {
 	
 		/*print out the results, as a ascending order of score */
 		for (int i=0; i<t.title.size(); i++){
-			System.out.format("%8s\t", t.title.get(i));		
+			System.out.format("%5s\t", t.title.get(i));		
 		}	
-		System.out.format("%8s\t","score");
+		System.out.format("%5s\t","score");
 		System.out.format("\n");
 		//print out each record with(id, attris, score)
 		while (!pQueue.minheap.isEmpty()){
@@ -58,17 +58,19 @@ public class ThresholdAlg {
             for(Map.Entry<Integer, Integer> entry : pQueue.idAndScore.entrySet() ){
             	if(entry.getValue().equals(min)){
             		printID=entry.getKey();
-            		printScore=entry.getValue();
+                	printScore=entry.getValue();
+                	pQueue.idAndScore.remove(entry.getKey());
+            		System.out.format("%5d\t", printID);
+            		for (int i=0; i<t.title.size()-1; i++){
+            			System.out.format("%5d\t", t.btIDIsIndex.getValue(printID).get(i) );		
+            		}	            	
+        			System.out.format("%5d",printScore);
+        			System.out.format("\n");
+        			break;
             	}
             }
-    		System.out.format("%8d\t", printID);
-    		for (int i=0; i<t.title.size()-1; i++){
-    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printID).get(i) );		
-    		}	            	
-			System.out.format("%8d",printScore);
-			System.out.format("\n");			
-		}	
+			
+		}
 		
-		
-	}	
+	}
 }
