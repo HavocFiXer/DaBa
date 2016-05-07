@@ -225,32 +225,50 @@ public class RankJoin {
 			}
 		}
 
-		ArrayList<String> AR = new ArrayList<String>();
-		AR = AttrResult;
-		for (int count = 0;  count < AR.size();  count ++){
-			System.out.format("%9s\t", AR.get(count));
-		}
-		
-		System.out.format("\n");
-		while (!pQueue.minheap.isEmpty()){
-			ArrayList<Integer> printTuple = new ArrayList<Integer>();
-			int printScore = 0;
-			int min =pQueue.minheap.poll();
-            for(Map.Entry<ArrayList<Integer>, Integer >  entry : pQueue.tupleAndScore.entrySet() ){
-            	if(entry.getValue().equals(min)){
-            		printTuple = entry.getKey();
-            		printScore=entry.getValue();
-            	}
-            } 
-            printScore = pQueue.tupleAndScore.get(printTuple);
-            System.out.format("%8d\t",printScore);
-            for (int i=0; i<printTuple.size(); i++){
-          		System.out.format("%8d\t", printTuple.get(i));	
-            }
+//		ArrayList<String> AR = new ArrayList<String>();
+//		AR = AttrResult;
+//		for (int count = 0;  count < AR.size();  count ++){
+//			System.out.format("%9s\t", AR.get(count));
+//		}
+//		
+//		System.out.format("\n");
+//		while (!pQueue.minheap.isEmpty()){
+//			ArrayList<Integer> printTuple = new ArrayList<Integer>();
+//			int printScore = 0;
+//			int min =pQueue.minheap.poll();
+//            for(Map.Entry<ArrayList<Integer>, Integer >  entry : pQueue.tupleAndScore.entrySet() ){
+//            	if(entry.getValue().equals(min)){
+//            		printTuple = entry.getKey();
+//            		printScore=entry.getValue();
+//            	}
+//            } 
+//            printScore = pQueue.tupleAndScore.get(printTuple);
+//            System.out.format("%8d\t",printScore);
+//            for (int i=0; i<printTuple.size(); i++){
+//          		System.out.format("%8d\t", printTuple.get(i));	
+//            }
 
-			System.out.format("\n");			
+  
+    		
+//    		for (int i=0; i< t.title.size()-1; i++){
+//    			System.out.format("%8d\t", t.btIDIsIndex.getValue(printTuple).get(i) );		
+//    		}	            	
+//			System.out.format("%8d",printScore);
+//			System.out.format("\n");			
+//		}
+		
+
+		for(Map.Entry<ArrayList<Integer>, Integer > entry : pQueue.tupleAndScore.entrySet()){
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+			System.out.format("%9s\t",entry.getValue().toString() );
+			for(int i = 0;i<entry.getKey().size();i++)
+			System.out.format("%9s\t",entry.getKey().get(i)   );
+			System.out.format("\n");
+			
 		}
 		
+
+
 	}
 	
 	
