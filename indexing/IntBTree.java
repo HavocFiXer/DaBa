@@ -112,10 +112,10 @@ public class IntBTree{
 			for(po=0;po<node.cnumber;++po){
 				if(node.children[po+1].key<key||node.cnumber-1==po){
 					Node tmpnode=ins(node.children[po++].next,key,value,ht-1);
+					if(null==tmpnode) return tmpnode;
 					element.key=tmpnode.children[0].key;
 					element.value=null;
 					element.next=tmpnode;
-					if(null==tmpnode) return tmpnode;
 					break;
 				}
 			}
